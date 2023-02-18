@@ -41,6 +41,7 @@ const forgetPasswordOTPSend = async (req, res) => {
   }
 };
 
+// varify otp
 const completOTP = async (req, res) => {
   try {
     var user = await userMOdel.findOne({
