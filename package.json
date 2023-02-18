@@ -52,7 +52,7 @@
     "start": "node index.js",
     "react": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "api": "set NODE_ENV=dev&&nodemon index.js",
     "apimac": "export NODE_ENV=dev&&nodemon index.js",
     "eject": "react-scripts eject"
