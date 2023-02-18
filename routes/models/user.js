@@ -64,6 +64,9 @@ const UserSchema = new Schema({
     required: true,
     default: false,
   },
+  otp: {
+    type: Number,
+  },
 });
 
 UserSchema.methods.comparePassword = function (password) {

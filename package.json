@@ -49,7 +49,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "yarn start",
+    "start": "node index.js",
     "react": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
@@ -80,5 +80,17 @@
     "customize-cra": "^1.0.0",
     "nodemon": "^2.0.12",
     "react-app-rewired": "^2.1.8"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nabi786/goXrAIopneAi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nabi786/goXrAIopneAi/issues"
+  },
+  "homepage": "https://github.com/nabi786/goXrAIopneAi#readme",
+  "description": ""
 }

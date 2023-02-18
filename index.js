@@ -25,6 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //form-urlencoded
 app.set("jwt", "ebeb1a5ada5cf38bfc2b49ed5b3100e0");
 
+app.use("/api", require("./routes/router/forgetPassword"));
+
 app.use("/api", require("./routes/api"));
 
 // Default Index Page
