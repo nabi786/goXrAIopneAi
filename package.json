@@ -50,12 +50,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "react": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "api": "set NODE_ENV=dev&&nodemon index.js",
-    "apimac": "export NODE_ENV=dev&&nodemon index.js",
-    "eject": "react-scripts eject"
+    "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "eslintConfig": {
     "extends": [
