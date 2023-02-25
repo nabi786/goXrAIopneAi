@@ -50,7 +50,8 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "yarn build"
   },
   "eslintConfig": {
     "extends": [
@@ -79,13 +80,13 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nabi786/goXrAIopneAi.git"
+    "url": "git+https://github.com/Bisal-Bhatti/Go-XR-Ai-Backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nabi786/goXrAIopneAi/issues"
+    "url": "https://github.com/Bisal-Bhatti/Go-XR-Ai-Backend/issues"
   },
-  "homepage": "https://github.com/nabi786/goXrAIopneAi#readme",
+  "homepage": "https://github.com/Bisal-Bhatti/Go-XR-Ai-Backend#readme",
   "description": ""
 }

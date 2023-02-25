@@ -7,36 +7,97 @@ const Feedback = db.feedback;
 // Prepare Core Router
 let app = express.Router(); // User Subscribe
 
+// app.post("/stripe/subscribe", async (req, res) => {
+//   const domainURL = process.env.DOMAIN;
+//   const { priceId, trial } = req.body;
+
+//   try {
+//     let user = await User.findOne({ _id: req.user._id });
+//     let customer = user.customerId
+//       ? { customer: user.customerId }
+//       : { customer_email: user.email };
+//     const subscription_data = trial ? { trial_period_days: 7 } : {};
+//     const session = await stripe.checkout.sessions.create({
+//       mode: "subscription",
+//       payment_method_types: ["card"],
+//       ...customer,
+//       line_items: [
+//         {
+//           price: priceId,
+//           // For metered billing, do not pass quantity
+//           quantity: 1,
+//         },
+//       ],
+//       subscription_data,
+//       success_url: `${domainURL}/signup/success?session_id={CHECKOUT_SESSION_ID}`,
+//       cancel_url: `${domainURL}/signup/failed`,
+//     });
+//     res.redirect(303, session.url);
+//   } catch (e) {
+//     res.status(400);
+//     // console.log(e)
+//     return res.send({
+//       error: {
+//         message: e.message,
+//       },
+//     });
+//   }
+// });
+
 app.post("/stripe/subscribe", async (req, res) => {
   const domainURL = process.env.DOMAIN;
+  console.log("domainURL", domainURL);
   const { priceId, trial } = req.body;
-
+  // console.log("req.body", req.body.priceId);
   try {
     let user = await User.findOne({ _id: req.user._id });
+    // console.log("this is user", user);
     let customer = user.customerId
       ? { customer: user.customerId }
       : { customer_email: user.email };
     const subscription_data = trial ? { trial_period_days: 7 } : {};
-    const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
-      payment_method_types: ["card"],
-      ...customer,
-      line_items: [
-        {
-          price: priceId,
-          // For metered billing, do not pass quantity
-          quantity: 1,
-        },
-      ],
-      subscription_data,
-      success_url: `${domainURL}signup/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${domainURL}signup/failed`,
+    var session = "";
+    if (trial === false) {
+      session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        payment_method_types: ["card"],
+        ...customer,
+        line_items: [
+          {
+            price: priceId,
+            // For metered billing, do not pass quantity
+            quantity: 1,
+          },
+        ],
+        subscription_data,
+        success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${domainURL}/canceled`,
+        // success_url:
+        //   "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
+        // cancel_url: "http://localhost:3000/canceled",
+      });
+    } else {
+      session = await stripe.subscriptions.create({
+        customer: user.customerId,
+        items: [{ price: priceId }],
+        trial_period_days: 7,
+        payment_settings: { save_default_payment_method: "on_subscription" },
+        trial_settings: { end_behavior: { missing_payment_method: "pause" } },
+      });
+    }
+
+    console.log("session is", session);
+    // res.redirect(303, session.url);
+    res.status(200).json({
+      success: true,
+      msg: "Free Plan Assigned Successfully",
+      // url: session.url,
     });
-    res.redirect(303, session.url);
   } catch (e) {
-    res.status(400);
+    // console.log("this is Erro", e);
+    // res.status(400);
     // console.log(e)
-    return res.send({
+    return res.status(400).send({
       error: {
         message: e.message,
       },
