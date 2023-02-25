@@ -50,8 +50,7 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint --fix --config .eslintrc.json \"**/*.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "yarn build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "eslintConfig": {
     "extends": [
