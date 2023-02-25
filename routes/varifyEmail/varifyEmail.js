@@ -6,7 +6,8 @@ const varifyEmail = async (subject, emailTo, message) => {
 
   var smtpEmail = process.env.SMTP_EMAIL;
   var smtpPass = process.env.SMTP_Pass;
-
+  console.log("smpt email", smtpEmail);
+  console.log("smpt smtpPass", smtpPass);
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
