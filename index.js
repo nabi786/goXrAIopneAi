@@ -8,7 +8,7 @@ require("dotenv-flow").config();
 require("./routes/middlewares/mongo");
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3000;
 
 app.use(morgan("dev"));
 app.use(cors());
