@@ -80,16 +80,14 @@ const signup = async (req, res) => {
       let referrer = await User.findOne({
         referralId: `${req.body.referral}`,
       });
-      console.log(`referrer._id`, referrer);
+
       if (referrer) {
         referrerObj = {
           referrer: referrer._id,
         };
       }
     }
-
-    console.log(`referrerObj`, referrerObj);
-
+    console.log("refefral obj", referrerObj);
     var password = "";
     var socialLogin = false;
     if (req.body.SocialLogin === true) {
@@ -102,7 +100,6 @@ const signup = async (req, res) => {
       password = bcrypt.hashSync(req.body.password, 8);
     }
 
-    console.log("working", uuid.v4());
     const user = new User({
       email: req.body.email,
       fname: req.body.fname,
@@ -113,15 +110,12 @@ const signup = async (req, res) => {
       ...referrerObj,
     });
 
-    await user.save((err, user) => {
-      if (err) {
-        res.status(500).json({ message: err });
-        return;
-      }
-      signin(req, res);
-    });
+    await user.save();
+    await signin(req, res);
+    // res.status(200).json({ success: true, msg: "registered Successfully" });
   } catch (err) {
     console.log("this is err", err);
+    res.status(500).json({ success: false, msg: "server error" });
   }
 };
 
@@ -139,7 +133,7 @@ const signup = async (req, res) => {
 //
 
 // Signup Page
-const signin = (req, res) => {
+const signin = async (req, res) => {
   // Check if req.body.email is a valid email address
   if (
     !req.body.email ||
@@ -159,61 +153,54 @@ const signin = (req, res) => {
     }
   }
 
-  User.findOne({
+  var user = await User.findOne({
     email: req.body.email,
-  })
-    .populate("roles", "-__v")
-    .exec((err, user) => {
-      if (err) {
-        res.status(500).json({ message: err });
-        return;
-      }
+  });
 
-      if (!user) {
-        return res.status(404).json({ message: "User Not found." });
-      }
+  if (!user) {
+    return res.status(404).json({ message: "User Not found." });
+  }
 
-      var passwordIsValid = "";
+  var passwordIsValid = "";
 
-      if (req.body.SocialLogin === false) {
-        passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+  if (req.body.SocialLogin === false) {
+    passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
-        if (!passwordIsValid) {
-          return res.status(401).send({
-            token: null,
-            message: "Invalid Password!",
-          });
-        }
-      } else {
-        if (user.socialLogin !== req.body.SocialLogin) {
-          return res.status(401).send({
-            token: null,
-            message: "Invalid Password!",
-          });
-        }
-      }
-
-      const userToken = {
-        _id: user._id,
-        email: user.email,
-        customerId: user.customerId,
-        accountType: user.accountType,
-      };
-
-      var token = jwt.sign(userToken, "ebeb1a5ada5cf38bfc2b49ed5b3100e0", {
-        expiresIn: 86400, // 24 hours
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        token: null,
+        message: "Invalid Password!",
       });
-
-      let profile = {
-        ...user.toObject(),
-      };
-      delete profile.password;
-
-      res.status(200).json({
-        token,
-        profile,
+    }
+  } else {
+    if (user.socialLogin !== req.body.SocialLogin) {
+      return res.status(401).send({
+        token: null,
+        message: "Invalid Password!",
       });
-    });
+    }
+  }
+
+  const userToken = {
+    _id: user._id,
+    email: user.email,
+    customerId: user.customerId,
+    accountType: user.accountType,
+  };
+
+  var token = jwt.sign(userToken, "ebeb1a5ada5cf38bfc2b49ed5b3100e0", {
+    expiresIn: 86400, // 24 hours
+  });
+
+  let profile = {
+    ...user.toObject(),
+  };
+  delete profile.password;
+
+  res.status(200).json({
+    token,
+    profile,
+  });
 };
 
 app.post("/signup", checkDuplicateUsernameOrEmail, signup);

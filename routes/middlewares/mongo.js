@@ -4,8 +4,8 @@ const mongoose = require("mongoose");
 require("dotenv-flow").config();
 
 //Assign MongoDB connection string to Uri and declare options settings
-var uri = `mongodb+srv://${process.env.MONGO_URL_NAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL_CLUSTER}/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
-// var uri = "mongodb://localhost:27017/goXRai";
+// var uri = `mongodb+srv://${process.env.MONGO_URL_NAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL_CLUSTER}/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
+var uri = "mongodb://localhost:27017/goXRai";
 console.log(`url: ` + uri);
 const db = require("../models");
 const User = db.user;
