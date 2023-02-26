@@ -1,6 +1,6 @@
-const OpenAI = require('openai-api');
+const OpenAI = require("openai-api");
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = new OpenAI(OPENAI_API_KEY);
+const openApiKey = process.env.OPENAI_API_KEY;
+const openai = new OpenAI(openApiKey);
 
-module.exports = openai
+module.exports = openai;
