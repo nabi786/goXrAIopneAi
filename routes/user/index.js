@@ -76,6 +76,12 @@ app.post("/stripe/subscribe", async (req, res) => {
         //   "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
         // cancel_url: "http://localhost:3000/canceled",
       });
+
+      // res.redirect(303, session.url);
+      res.status(200).json({
+        success: true,
+        url: session.url,
+      });
     } else {
       session = await stripe.subscriptions.create({
         customer: user.customerId,
@@ -84,15 +90,15 @@ app.post("/stripe/subscribe", async (req, res) => {
         payment_settings: { save_default_payment_method: "on_subscription" },
         trial_settings: { end_behavior: { missing_payment_method: "pause" } },
       });
-    }
 
-    console.log("session is", session);
-    // res.redirect(303, session.url);
-    res.status(200).json({
-      success: true,
-      msg: "Free Plan Assigned Successfully",
-      // url: session.url,
-    });
+      console.log("session is", session);
+      // res.redirect(303, session.url);
+      res.status(200).json({
+        success: true,
+        msg: "Free Plan Assigned Successfully",
+        // url: session.url,
+      });
+    }
   } catch (e) {
     // console.log("this is Erro", e);
     // res.status(400);
