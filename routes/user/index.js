@@ -72,9 +72,6 @@ app.post("/stripe/subscribe", async (req, res) => {
         subscription_data,
         success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${domainURL}/canceled`,
-        // success_url:
-        //   "http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}",
-        // cancel_url: "http://localhost:3000/canceled",
       });
 
       // res.redirect(303, session.url);
