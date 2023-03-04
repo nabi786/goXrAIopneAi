@@ -75,6 +75,21 @@ app.post("/stripe/subscribe", async (req, res) => {
       });
 
       // res.redirect(303, session.url);
+
+      if (process.env.STRIPE_PRODUCT_ENTRY == priceId) {
+        await User.findOneAndUpdate(
+          { _id: req.user._id },
+          { credits: process.env.CreditForMiddlePlan }
+        );
+      }
+
+      if (process.env.STRIPE_PRODUCT_PRO == priceId) {
+        await User.findOneAndUpdate(
+          { _id: req.user._id },
+          { credits: process.env.CreditForProPlan }
+        );
+      }
+
       res.status(200).json({
         success: true,
         url: session.url,
@@ -88,8 +103,10 @@ app.post("/stripe/subscribe", async (req, res) => {
         trial_settings: { end_behavior: { missing_payment_method: "pause" } },
       });
 
-      console.log("session is", session);
-      // res.redirect(303, session.url);
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { credits: process.env.CreditForFreePlan }
+      );
       res.status(200).json({
         success: true,
         msg: "Free Plan Assigned Successfully",

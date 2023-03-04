@@ -21,20 +21,28 @@ const UserSchema = new Schema({
   permissions: { type: [String], default: ["user"] },
   created: { type: Date, default: Date.now },
   customerId: { type: String, default: "" }, // stripe id
+  // credits: {
+  //   type: Number,
+  //   default: 1000,
+  //   integer: true,
+  //   get: (v) => Math.round(v),
+  //   set: (v) => Math.round(v),
+  // },
   credits: {
     type: Number,
-    default: 1000,
-    integer: true,
-    get: (v) => Math.round(v),
-    set: (v) => Math.round(v),
+    default: 0,
   },
   creditsUsed: {
     type: Number,
     default: 0,
-    integer: true,
-    get: (v) => Math.round(v),
-    set: (v) => Math.round(v),
   },
+  // creditsUsed: {
+  //   type: Number,
+  //   default: 0,
+  //   integer: true,
+  //   get: (v) => Math.round(v),
+  //   set: (v) => Math.round(v),
+  // },
   plan: { type: String, default: "" }, // entry, pro
   status: { type: String, default: "" }, // trialing, active, inactive
   trial_end: {
